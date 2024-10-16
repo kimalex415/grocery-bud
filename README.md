@@ -1,99 +1,88 @@
-## Figma URL
+# Grocery Bud App
 
-[Grocery Bud](https://www.figma.com/file/8rXGl68NoEmAhHpcV7aB5o/Grocery-bud?node-id=0%3A1&t=IMjjwDExGWpXdpQL-1)
+This is a simple **Grocery List App** built with React. The app allows users to add items to a list, mark them as completed, and remove items. It uses **localStorage** to persist the list across page reloads.
 
-## Steps
+## Features
 
-#### State Variable
+- **Add items** to the grocery list.
+- **Mark items** as completed/uncompleted.
+- **Remove items** from the list.
+- List is **persisted** in the browser's `localStorage`.
 
-In App.jsx, set up a state variable called items using the useState hook.
+## How it Works
 
-#### Form Component
+The application consists of the following main components:
 
-Create a Form component that contains an input field and a submit button. When the user submits the form, the handleSubmit function is called.
+1. **App Component**:
 
-In the handleSubmit function, prevent the default form submission behavior using event.preventDefault(). If the form is submitted with an empty value, log a message and return.
+   - Manages the state of the grocery list and the main logic for adding, removing, and editing items.
+   - Uses `localStorage` to save and load the grocery list so that it persists even after refreshing the page.
 
-#### Add Item
+2. **Form Component**:
 
-If the form is submitted with a value, create a new item object that includes a name (taken from the form input), a completed property (default value false), and a unique id (generated using a library like uuid or nanoid).
+   - A simple form that allows users to enter the name of a grocery item and submit it to be added to the list.
 
-Add the new item to the items state variable using the setItems function.
+3. **Items Component**:
 
-#### Render List
+   - Displays all items in the list.
+   - Each item can be removed or marked as completed.
 
-Create two new components: Items and SingleItem. In Items, iterate over the list of items and render each one in a SingleItem component. For now, only render the name of the item.
+4. **SingleItem Component**:
+   - Represents a single grocery item with a checkbox to mark it as completed and a delete button to remove it.
 
-#### SingleItem
+### `localStorage` Usage
 
-In SingleItem, set up a state variable called isChecked with a default value of the item's completed property. Render a checkbox and add inline styles to add or remove the text-decoration: line-through property based on the isChecked value. Set up functionality to toggle the isChecked state variable when the checkbox is clicked.
+The app uses `localStorage` to store the grocery list, ensuring that the list persists between page reloads. Here’s how it’s integrated:
 
-#### Remove Item
+- **Saving to localStorage**:
+  When a new item is added, edited, or removed, the updated list is saved to `localStorage` using the `setLocalStorage` function:
 
-In App.jsx, create a removeItem function and pass it down to the SingleItem component. In SingleItem, add a button that, when clicked, removes the item from the list.
+  ```js
+  const setLocalStorage = (items) => {
+  	localStorage.setItem("list", JSON.stringify(items));
+  };
+  ```
 
-#### Local Storage
+- **Loading from localStorage**:
+  When the app is initialized, it loads the list from `localStorage`:
 
-Set up local storage functionality to persist the list of items across page reloads.
-More info below.
+  ```js
+  const defaultList = JSON.parse(localStorage.getItem("list") || "[]");
+  ```
 
-#### Global Edit
+  This ensures that the user's grocery list remains available even after refreshing or reopening the browser.
 
-Instead of 'local' value, set completed 'globally' (in the list) and save result in the local storage.
+## Installation
 
-#### React-Toastify
+To run the project locally:
 
-Implement the react-toastify library to handle alerts when a new item is added to the list, when the user tries to submit an empty form, and when an item is removed from the list.
+1. Clone the repository:
 
-Overall, the flow of the application should look something like this:
+   ```bash
+   git clone https://github.com/your-username/grocery-bud.git
+   ```
 
-- In App.jsx, set up a state variable called items using the useState hook.
-- Create a Form component that contains an input field and a submit button, and set up the handleSubmit function to add new items to the list.
-- Create two new components: Items and SingleItem, and use them to render the list of items.
-- Set up local storage functionality to persist the list of items across page reloads.
-- Implement the react-toastify library to handle alerts when a new item is added to the list, when the user tries to submit an empty form, and when an item is removed from the list.
+2. Navigate to the project directory:
 
-#### Local Storage
+   ```bash
+   cd grocery-bud
+   ```
 
-localStorage is a built-in object in web browsers that allows web applications to store key-value pairs locally within the user's browser.
+3. Install the dependencies:
 
-To store data in localStorage, you can use the localStorage.setItem(key, value) method, where key is a unique identifier for the data being stored and value is the data you want to store. Note that the value parameter needs to be a string.
+   ```bash
+   npm install
+   ```
 
-Here's an example of how to use localStorage.setItem():
+4. Start the development server:
 
-```js
-localStorage.setItem('username', 'John');
-```
+   ```bash
+   npm start
+   ```
 
-This code stores the string 'John' with the key 'username' in localStorage.
+5. Open your browser and go to `http://localhost:3000` to view the app.
 
-To retrieve data from localStorage, you can use the localStorage.getItem(key) method, where key is the unique identifier for the data you want to retrieve. This method returns the value associated with the key you pass in, as a string.
+## Dependencies
 
-Here's an example of how to use localStorage.getItem() to retrieve the value of the 'username' key we set earlier:
-
-```js
-const username = localStorage.getItem('username');
-console.log(username); // outputs 'John'
-```
-
-Note that localStorage can only store strings, so if you need to store objects or other data types, you'll need to convert them to strings first. One way to do this is to use JSON.stringify() to convert your data to a JSON string before storing it in localStorage, and then use JSON.parse() to convert it back to an object when you retrieve it.
-
-For example:
-
-```js
-const user = {
-  name: 'John',
-  age: 30,
-  email: 'john@example.com',
-};
-
-localStorage.setItem('user', JSON.stringify(user));
-
-const storedUser = JSON.parse(localStorage.getItem('user'));
-
-console.log(storedUser.name); // outputs 'John'
-console.log(storedUser.age); // outputs 30
-console.log(storedUser.email); // outputs 'john@example.com'
-```
-
-In summary, localStorage allows you to store key-value pairs locally in the user's browser using localStorage.setItem() and retrieve those values using localStorage.getItem(). However, note that localStorage can only store strings, so you'll need to convert other data types to strings before storing them.
+- **React**: A JavaScript library for building user interfaces.
+- **nanoid**: A library for generating unique IDs.
